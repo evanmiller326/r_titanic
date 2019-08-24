@@ -18,6 +18,9 @@ Let's take a look at what is in the train and test data sets.
 ```{r}
 str(train)
 ```
+```{r}
+train$Pclass <-  as.factor(train$Pclass)
+```
 
 Let's see how many missing values there are in each of the columns.
 ```{r}
@@ -36,6 +39,35 @@ sum(train$Survived)/length(train$Survived)
 train_na <- subset(train, is.na(train$Age))
 sum(train_na$Survived)/length(train_na$Survived)
 ```
+It doesn't appear that there is a huge difference between the number of missing ages and the survival rate.
+
+Since this isn't a huge dataset I don't want to remove all of those entries. Let's take a look at the distribution of ages, then impute with the average or median ages.
+
+```{r}
+ggplot(data=train, aes(x=Age)) +
+geom_histogram(color="darkblue", fill="lightblue", bins = 50, na.rm =TRUE) +
+ geom_vline(mapping = aes(xintercept=mean(Age, na.rm=TRUE)), color='red', linetype='dashed', size=1) +
+ geom_vline(mapping = aes(xintercept=median(Age, na.rm=TRUE)), color='green', linetype='dashed', size=1)
+```
+Since this is a Poison distribution we'll use the median. The median is also visually a little more in the middle.
+
+Let's also check to see if some of the features are correlated.
+We'll look first at Fare and Class
+```{r}
+ggplot(data=train, mapping = aes(x=Pclass, y=Fare))+
+  geom_boxplot() +
+  geom_point(aes(y=Fare, x=Pclass, color = Survived), alpha = 0.5) 
+```
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,44 @@
+---
+title: "Titanic Dataset - Exploration with R"
+output: html_notebook
+---
+
+Get the required packages:
+```{r}
+require(ggplot2)
+```
+
+Load the data into R:
+```{r}
+train <- read.csv("train.csv", stringsAsFactors = F) #For cleaning purposes let's not convert strings to factors.
+test <- read.csv("test.csv", stringsAsFactors = F)
+```
+
+Let's take a look at what is in the train and test data sets.
+```{r}
+str(train)
+```
+
+Let's see how many missing values there are in each of the columns.
+```{r}
+for (n in names(train)){
+  cat(sprintf("%s missing %i values.\n", n, sum(is.na(train[n]))))
+}
+```
+It appears that the "Age" column has a significant number of missing values.
+Luckily however there are not missing values in the other columns.
+
+Before we remove or impute the missing values, let's just make sure there is not a correlation between the missing values and the predictions.
+```{r}
+#Let's get a baseline for what ratio survived.
+sum(train$Survived)/length(train$Survived)
+#Now do the same for the "NA" Ages.
+train_na <- subset(train, is.na(train$Age))
+sum(train_na$Survived)/length(train_na$Survived)
+```
+
+
+
+
+
+
